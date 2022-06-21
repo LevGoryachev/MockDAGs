@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/api/v1/dags")
@@ -12,6 +13,22 @@ import java.time.LocalDateTime;
 public class DagsController {
 
     @PostMapping("/{dagId}/dagRuns")
+    public ResponseEntity<DagResponseDto> create(@PathVariable("dagId") String dagId, @RequestBody DagRequestDto dagRequestDto) {
+        DagResponseDto dagResponseDto = new DagResponseDto();
+        LinkedHashMap<String, Object> confParameters = dagRequestDto.getConf();
+        confParameters.put("newParameter", "Hello from MockDags");
+        confParameters.remove("User_AD_Login");
+        dagResponseDto.setConf(confParameters);
+        dagResponseDto.setDagId(dagId);
+        dagResponseDto.setDagRunId("578");
+        dagResponseDto.setEndDate(new Timestamp(System.currentTimeMillis()));
+        dagResponseDto.setExecutionDate("31.12.2022");
+        dagResponseDto.setStartDate(new Timestamp(System.currentTimeMillis()));
+        dagResponseDto.setState("run");
+        return ResponseEntity.ok(dagResponseDto);
+    }
+
+    /*@PostMapping("/{dagId}/dagRuns")
     public ResponseEntity<DagRunsResponseDto> create(@PathVariable("dagId") String dagId, @RequestBody ArpDecomApprovalRequestDto arpDecomApprovalRequestDto) {
         DagRunsResponseDto dto = new DagRunsResponseDto();
         dto.setDagId(dagId);
@@ -19,5 +36,5 @@ public class DagsController {
         dto.setExecutionDate("31.12.2022");
         dto.setState("run");
         return ResponseEntity.ok(dto);
-    }
+    }*/
 }
