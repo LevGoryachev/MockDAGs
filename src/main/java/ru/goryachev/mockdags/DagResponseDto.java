@@ -21,7 +21,9 @@ import java.util.LinkedHashMap;
 })
 @Data
 public class DagResponseDto {
-    public LinkedHashMap<String, Object> conf;
+    //public LinkedHashMap<String, Object> conf;
+    @JsonProperty("conf")
+    public Object conf;
     @JsonProperty("dag_id")
     public String dagId;
     @JsonProperty("dag_run_id")
