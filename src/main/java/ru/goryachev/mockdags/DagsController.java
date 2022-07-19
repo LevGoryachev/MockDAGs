@@ -25,7 +25,46 @@ public class DagsController {
         return ResponseEntity.ok(dagResponseDto);
     }
 
-    @GetMapping("/{dagId}/dagRuns/{dagRunId}/taskInstances/end_with_error_task")
+    @GetMapping("/{dagId}/dagRuns/{dagRunId}/taskInstances/check_run")
+    public ResponseEntity<DagStartCheckResponse> check_run(@PathVariable("dagId") String dagId, @PathVariable("dagRunId") String dagRunId) {
+
+        if(dagRunId == null){
+            return null;
+        }
+
+        DagStartCheckResponse dagChkResponse = new DagStartCheckResponse();
+
+        dagChkResponse.setDagId(dagId);
+        dagChkResponse.setDuration(0.189251);
+        dagChkResponse.setEndDate("2022-07-09T14:57:05.279209+00:00");
+        dagChkResponse.setExecutionDate("2022-07-09T14:57:04.360156+00:00");
+        dagChkResponse.setExecutorConfig("{}");
+        dagChkResponse.setHostname("d5apcs-apc001lk.corp.dev.vtb");
+        dagChkResponse.setMaxTries(0);
+        dagChkResponse.setOperator("PythonOperator");
+        dagChkResponse.setPid(3913934);
+        dagChkResponse.setPool("default_pool");
+        dagChkResponse.setPoolSlots(1);
+        dagChkResponse.setPriorityWeight(3);
+        dagChkResponse.setQueue("default");
+        dagChkResponse.setQueuedWhen("2022-07-09T14:57:04.506030+00:00");
+        dagChkResponse.setSlaMiss(null);
+        dagChkResponse.setStartDate("2022-07-09T14:57:05.089958+00:00");
+        dagChkResponse.setState("success");
+        dagChkResponse.setTaskId("check_run");
+        dagChkResponse.setTryNumber(1);
+        dagChkResponse.setUnixname("root");
+
+        return ResponseEntity.ok(dagChkResponse);
+    }
+
+    @DeleteMapping("/{dagId}/dagRuns/{dagRunId}")
+    public String deleteDag(@PathVariable(name = "dagId") String dagId,
+                          @PathVariable(name = "dagRunId") String dagRunId) {
+        return "Success.";
+    }
+
+    /*@GetMapping("/{dagId}/dagRuns/{dagRunId}/taskInstances/end_with_error_task")
     public ResponseEntity<DagResponseDto> create(@PathVariable("dagId") String dagId, @PathVariable("dagRunId") String dagRunId) {
         DagResponseDto dagResponseDto = new DagResponseDto();
 
@@ -36,7 +75,7 @@ public class DagsController {
         dagResponseDto.setStartDate(new Timestamp(System.currentTimeMillis()));
         dagResponseDto.setState("run");
         return ResponseEntity.ok(dagResponseDto);
-    }
+    }*/
 
     /*@PostMapping("/{dagId}/dagRuns")
     public ResponseEntity<DagResponseDto> create(@PathVariable("dagId") String dagId, @RequestBody DagRequestDto dagRequestDto) {
