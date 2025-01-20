@@ -1,44 +1,49 @@
 package ru.goryachev.mockdags;
 
-/*import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.tcp.TcpInboundGateway;
-import org.springframework.integration.tcp.connection.TcpNetServerConnectionFactory;
-import org.springframework.integration.core.MessageHandler;
-import org.springframework.messaging.MessageChannel;*/
+import org.springframework.integration.ip.tcp.TcpInboundGateway;
+import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
+import org.springframework.integration.ip.tcp.serializer.ByteArrayElasticRawDeserializer;
+import org.springframework.messaging.MessageChannel;
 
-//@Configuration
+//import org.springframework.integration.ip.tcp.serializer.StringTcpSerializer;
+
+@Configuration
 public class TcpServerConfig {
-/*
-    // Создаем канал для обработки сообщений
+
+    /**
+     * Создаем канал для обработки сообщений inputChannelOne
+     * @author Lev Goryachev
+     */
     @Bean
-    public MessageChannel tcpInputChannel() {
+    public MessageChannel inputChannelOne() {
         return new DirectChannel();
     }
 
-    // Создаем фабрику для TCP-соединений (параметры порта и адреса)
+    /**
+     * Создаем фабрику для TCP-соединений
+     * @author Lev Goryachev
+     */
     @Bean
     public TcpNetServerConnectionFactory connectionFactory() {
-        return new TcpNetServerConnectionFactory(12345); // порт
+        TcpNetServerConnectionFactory factory = new TcpNetServerConnectionFactory(8086); //наш порт сервера для tcp
+        //factory.setSerializer(new ByteArrayRawSerializer());  // Сериализатор строк
+        factory.setDeserializer(new ByteArrayElasticRawDeserializer()); // Десериализатор строк
+        return factory;
     }
 
-    // Создаем компонент для обработки входящих сообщений через TCP
+    /**
+     * оздаем компонент для обработки входящих сообщений через TCP
+     * @author Lev Goryachev
+     */
     @Bean
     public TcpInboundGateway tcpInboundGateway() {
         TcpInboundGateway gateway = new TcpInboundGateway();
         gateway.setConnectionFactory(connectionFactory());
-        gateway.setRequestChannel(tcpInputChannel());
+        gateway.setRequestChannel(inputChannelOne());
         return gateway;
     }
-
-    // Обработчик входящих сообщений
-    @ServiceActivator(inputChannel = "tcpInputChannel")
-    public MessageHandler handler() {
-        return message -> {
-            System.out.println("Received message: " + message.getPayload());
-            // Ответ клиенту (можно настроить обработку ответа)
-        };
-    }*/
 }
+
